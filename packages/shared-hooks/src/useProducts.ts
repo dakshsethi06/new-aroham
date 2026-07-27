@@ -37,10 +37,11 @@ function sanitizeProduct(p: any): ArohamProduct {
     finalImg = formatImageUrl(rawImg);
   } else {
     const n = (p.name || "").toLowerCase();
-    if (n.includes("tortoise") || n.includes("dhan")) finalImg = "https://cdn.shopify.com/s/files/1/0878/4907/4985/files/Artboard1_9.webp?v=1779101616";
+    if (n.includes("karungali") || n.includes("murugan") || n.includes("mala")) finalImg = "https://cdn.shopify.com/s/files/1/0878/4907/4985/files/Gemini_Generated_Image_v3lcuev3lcuev3lc_1.webp?v=1779692958";
+    else if (n.includes("tortoise") || n.includes("dhan labh")) finalImg = "https://cdn.shopify.com/s/files/1/0878/4907/4985/files/Artboard1_9.webp?v=1779101616";
     else if (n.includes("khatu") || n.includes("murti") || n.includes("dome")) finalImg = "https://cdn.shopify.com/s/files/1/0878/4907/4985/files/1-2026-05-18T155529.062.webp?v=1779099953";
     else if (n.includes("sun") || n.includes("wall") || n.includes("brass") || n.includes("pyrite")) finalImg = "https://cdn.shopify.com/s/files/1/0878/4907/4985/files/Artboard1_18.webp?v=1782199970";
-    else if (n.includes("bracelet") || n.includes("agate") || n.includes("mala") || n.includes("raksha") || n.includes("couple")) finalImg = "https://cdn.shopify.com/s/files/1/0878/4907/4985/files/1-1_f53e2d9e-40a0-4f0e-95a9-8d6a878b2f77.webp?v=1781163169";
+    else if (n.includes("bracelet") || n.includes("agate") || n.includes("necklace") || n.includes("couple")) finalImg = "https://cdn.shopify.com/s/files/1/0878/4907/4985/files/1-1_f53e2d9e-40a0-4f0e-95a9-8d6a878b2f77.webp?v=1781163169";
     else if (n.includes("ring") || n.includes("citrine")) finalImg = "https://cdn.shopify.com/s/files/1/0878/4907/4985/files/Artboard1_19.webp?v=1782733204";
     else if (n.includes("rudraksha") || n.includes("mukhi")) finalImg = "https://cdn.shopify.com/s/files/1/0878/4907/4985/files/1_a144e37f-680e-430f-80bd-e7c35b9d2ebb.webp?v=1759924225";
   }
@@ -76,7 +77,7 @@ function sanitizeProduct(p: any): ArohamProduct {
   };
 }
 
-const CACHE_KEY = "aroham_products_v4";
+const CACHE_KEY = "aroham_products_v5";
 
 export function useProducts() {
   const [products, setProducts] = useState<ArohamProduct[]>(() => {
