@@ -7,9 +7,6 @@
     "admin": {
       "root": "apps/admin",
       "framework": "vite"
-    },
-    "backend": {
-      "root": "backend"
     }
   }
 }
