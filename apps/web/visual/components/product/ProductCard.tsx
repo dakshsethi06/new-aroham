@@ -15,6 +15,19 @@ export interface ProductCardProps {
   onToggleWish?: (key: string, e: React.MouseEvent) => void;
 }
 
+function getAuthenticProductImage(name: string, rawImg: any): string {
+  if (rawImg && typeof rawImg === "string" && rawImg.trim() !== "" && rawImg !== "undefined" && !rawImg.includes("photo-1611312449408")) {
+    return rawImg;
+  }
+  const n = (name || "").toLowerCase();
+  if (n.includes("tortoise") || n.includes("dhan")) return "https://cdn.shopify.com/s/files/1/0878/4907/4985/files/Artboard1_9.webp?v=1779101616";
+  if (n.includes("khatu") || n.includes("murti") || n.includes("dome")) return "https://cdn.shopify.com/s/files/1/0878/4907/4985/files/1-2026-05-18T155529.062.webp?v=1779099953";
+  if (n.includes("sun") || n.includes("wall") || n.includes("brass")) return "https://cdn.shopify.com/s/files/1/0878/4907/4985/files/Artboard1_18.webp?v=1782199970";
+  if (n.includes("bracelet") || n.includes("agate") || n.includes("mala") || n.includes("raksha")) return "https://cdn.shopify.com/s/files/1/0878/4907/4985/files/1-1_f53e2d9e-40a0-4f0e-95a9-8d6a878b2f77.webp?v=1781163169";
+  if (n.includes("ring") || n.includes("citrine") || n.includes("pyrite")) return "https://cdn.shopify.com/s/files/1/0878/4907/4985/files/Artboard1_19.webp?v=1782733204";
+  return "https://cdn.shopify.com/s/files/1/0878/4907/4985/files/1_23.jpg?v=1782120393";
+}
+
 export function ProductCard({ product: p, onProductClick, onAddToCart, wishKey = "", wished: propWished, onToggleWish }: ProductCardProps) {
   const navigate = useNavigate();
   const { toggleWishlist, isInWishlist } = useWishlist();
@@ -32,6 +45,8 @@ export function ProductCard({ product: p, onProductClick, onAddToCart, wishKey =
   while (displayOriginal > 20000) displayOriginal = displayOriginal / 100;
   displayOriginal = Math.round(displayOriginal);
 
+  const displayImg = getAuthenticProductImage(p.name, p.img);
+
   const handleWishClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (onToggleWish && wishKey) {
@@ -48,7 +63,7 @@ export function ProductCard({ product: p, onProductClick, onAddToCart, wishKey =
       onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.boxShadow = "0 2px 18px rgba(91,31,36,0.06)"}>
       <div>
         <div className="relative overflow-hidden aspect-square bg-amber-50 flex-shrink-0">
-          <img src={p.img} alt={p.subtitle && p.subtitle !== "undefined" ? `${p.name} - ${p.subtitle}` : p.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <img src={displayImg} alt={p.subtitle && p.subtitle !== "undefined" ? `${p.name} - ${p.subtitle}` : p.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
           {p.badges && p.badges.length > 0 && displayPrice > 1000 && (
             <div className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[9px] font-bold tracking-wide" style={{ background: "rgba(91,31,36,0.88)", color: GOLD }}>{p.badges[0]}</div>
           )}
