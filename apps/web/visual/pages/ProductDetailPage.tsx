@@ -198,6 +198,11 @@ export function ProductDetailPage() {
     ? product.description
     : (product.shortDesc || `${product.name} is designed to attract wealth, abundance, and good fortune while adding a timeless and elegant touch to your everyday style.`);
 
+  const displayMaterial = (!product.material || product.material === "NA" || product.material === "N/A") ? "Natural" : product.material;
+  const displaySize = (!product.size || product.size === "NA" || product.size === "N/A") ? "Standard" : product.size;
+  const displayCategory = (!product.category || product.category === "Other") ? "Puja Items" : product.category;
+  const displayPurpose = (!product.purpose || product.purpose === "Sacred Harmony") ? "Well-being" : product.purpose;
+
   const tabContent = [
     <div className="space-y-5">
       <p className="text-sm leading-relaxed" style={{ color: "#5A4A3A" }}>
@@ -207,7 +212,7 @@ export function ProductDetailPage() {
         {fullDescription} The geometric precision in its construction aligns with cosmic frequencies that Vedic tradition identifies as channels for specific divine energies.
       </p>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4">
-        {[["MATERIAL", product.material || "Natural"], ["SIZE", product.size || "Standard"], ["CATEGORY", product.category || "Puja Items"], ["PURPOSE", product.purpose || "Well-being"]].map(([k, v]) => (
+        {[["MATERIAL", displayMaterial], ["SIZE", displaySize], ["CATEGORY", displayCategory], ["PURPOSE", displayPurpose]].map(([k, v]) => (
           <div key={k} className="p-3.5 rounded-2xl" style={{ background: "rgba(200,160,68,0.06)", border: "1px solid rgba(200,160,68,0.15)" }}>
             <div className="text-[10px] font-bold uppercase tracking-wide mb-0.5" style={{ color: GOLD }}>{k}</div>
             <div className="text-sm font-medium" style={{ color: MAROON }}>{v}</div>
