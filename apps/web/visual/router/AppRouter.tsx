@@ -15,6 +15,9 @@ import { ConfirmationPage } from "@visual/pages/ConfirmationPage";
 import { ConsultPage } from "@visual/pages/ConsultPage";
 import { ProfilePage } from "@visual/pages/ProfilePage";
 import { AstrologerDashboard } from "@visual/pages/AstrologerDashboard";
+import { AstrologerOnboardingPage } from "@visual/pages/AstrologerOnboardingPage";
+import { AstrologerOnboardingPortal } from "@visual/pages/AstrologerOnboardingPortal";
+
 import { ShippingPolicyPage } from "@visual/pages/ShippingPolicyPage";
 import { ReturnPolicyPage } from "@visual/pages/ReturnPolicyPage";
 import { FAQPage } from "@visual/pages/FAQPage";
@@ -149,7 +152,10 @@ export function AppRouter() {
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/login" element={<AuthPage />} />
         <Route path="/astrologer" element={<AstrologerDashboard />} />
+        <Route path="/astrologer/onboarding" element={<AstrologerOnboardingPage />} />
+        <Route path="/astrologer/portal" element={<AstrologerOnboardingPortal />} />
       </Routes>
     </BrowserRouter>
   );
 }
+

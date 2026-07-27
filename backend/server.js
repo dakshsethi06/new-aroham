@@ -58,9 +58,17 @@ app.use("/api/payments", require("./routes/payments"));
 app.use("/api/addresses", require("./routes/addresses"));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/shiprocket", require("./routes/shiprocket"));
+app.use("/api/onboarding", require("./routes/onboarding"));
+app.use("/api/admin/onboarding", require("./routes/adminOnboarding"));
+
 
 
 app.get("/api/health", (req, res) => res.json({ status: "ok", service: "aroham-backend" }));
+app.get("/", (req, res) => res.json({ status: "ok", service: "aroham-backend-api" }));
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🕉️  Aroham backend running on http://localhost:${PORT}`));
+if (process.env.NODE_ENV !== "production" || require.main === module) {
+  app.listen(PORT, () => console.log(`🕉️  Aroham backend running on http://localhost:${PORT}`));
+}
+
+module.exports = app;

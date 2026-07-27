@@ -3,11 +3,11 @@ const supabase = require("../config/supabase");
 let admin = null;
 try {
   admin = require("firebase-admin");
-  if (!admin.apps.length) {
+  if (admin && Array.isArray(admin.apps) && !admin.apps.length) {
     admin.initializeApp();
   }
 } catch (e) {
-  // Firebase Admin fallback if service account key is unconfigured
+  admin = null;
 }
 
 async function requireAuth(req, res, next) {
@@ -16,7 +16,8 @@ async function requireAuth(req, res, next) {
   if (!token) return res.status(401).json({ error: "Missing auth token" });
 
   // 1. Try Firebase Admin token verification
-  if (admin && admin.apps.length) {
+  if (admin && Array.isArray(admin.apps) && admin.apps.length) {
+
     try {
       const decodedToken = await admin.auth().verifyIdToken(token);
       req.user = {

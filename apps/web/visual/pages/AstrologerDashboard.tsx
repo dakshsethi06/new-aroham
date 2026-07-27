@@ -3,6 +3,9 @@ import { useNavigate } from "react-router";
 import { supabase } from "@aroham/shared-services";
 import { MAROON, GOLD, IVORY, SANS, SERIF } from "@aroham/shared-config/theme";
 import { useAuth } from "@aroham/shared-auth";
+import { AstrologerOnboardingPortal } from "./AstrologerOnboardingPortal";
+import { API_BASE_URL } from "../config/apiConfig";
+
 import { useProducts } from "@aroham/shared-hooks/useProducts";
 import { generateUUID } from "@aroham/shared-utils/uuid";
 import {
@@ -64,10 +67,46 @@ export function AstrologerDashboard() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
 
+  const [isOnboardingApproved, setIsOnboardingApproved] = useState<boolean>(() => {
+    return localStorage.getItem("aroham_astro_onboarded") === "true";
+  });
+  const [onboardingLoading, setOnboardingLoading] = useState(true);
+
+  useEffect(() => {
+    const checkOnboardingStatus = async () => {
+      const token = localStorage.getItem("astro_applicant_token") || localStorage.getItem("aroham_auth_token");
+      if (!token) {
+        setOnboardingLoading(false);
+        return;
+      }
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/onboarding/application`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (res.ok && data.application) {
+          const status = data.application.status;
+          if (status === "APPROVED" || status === "ACTIVATED") {
+            setIsOnboardingApproved(true);
+            localStorage.setItem("aroham_astro_onboarded", "true");
+          } else {
+            setIsOnboardingApproved(false);
+            localStorage.removeItem("aroham_astro_onboarded");
+          }
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setOnboardingLoading(false);
+      }
+    };
+    checkOnboardingStatus();
+  }, [user]);
+
   const mockStrForId = localStorage.getItem("aroham_mock_session");
   const currentUserObj = user || (mockStrForId ? JSON.parse(mockStrForId) : null);
-  // Use a valid UUID syntax fallback instead of 'astro-1' to prevent Postgres syntax errors when executing queries.
   const currentAstroId = currentUserObj?.id || "00000000-0000-0000-0000-000000000001";
+
 
   // Collect all possible IDs this astrologer might be known by
   const getAllAstroIds = (): string[] => {
@@ -1024,6 +1063,23 @@ export function AstrologerDashboard() {
                 <span>{portalLoading ? "Sending OTP..." : "Get Verification Code"}</span>
                 <Send size={14} />
               </button>
+
+              <div className="pt-4 border-t border-amber-900/10 space-y-2">
+                <button
+                  type="button"
+                  onClick={() => navigate("/astrologer/onboarding")}
+                  className="w-full py-2.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-all flex items-center justify-center gap-1.5 shadow-sm"
+                >
+                  <Sparkles size={14} /> <span>New Astrologer? Start Onboarding Application</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => navigate("/astrologer/portal")}
+                  className="w-full py-2 rounded-xl text-xs font-semibold text-[#5B1F24] hover:bg-amber-100/50 transition-all flex items-center justify-center gap-1"
+                >
+                  <Clock size={14} /> <span>Track Interview & Application Status</span>
+                </button>
+              </div>
             </form>
           ) : (
             <form onSubmit={handleVerifyPortalOtp} className="space-y-4 text-left">
@@ -1057,6 +1113,20 @@ export function AstrologerDashboard() {
         </div>
       </div>
     );
+  }
+
+  if (onboardingLoading) {
+    return (
+      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-6">
+        <div className="flex items-center gap-3 text-amber-400 font-bold">
+          <RefreshCw className="w-5 h-5 animate-spin" /> Verifying Onboarding Journey...
+        </div>
+      </div>
+    );
+  }
+
+  if (!isOnboardingApproved) {
+    return <AstrologerOnboardingPortal />;
   }
 
   return (

@@ -398,14 +398,19 @@ export function AuthPage() {
           }
 
           // Save to Firestore 'astrologers' collection
-          setDoc(doc(db, "astrologers", newAstrologer.id), {
-            fullName: astroFullName,
-            email: email.trim() || null,
-            phone: phoneDigits,
-            title: newAstrologer.title,
-            role: "astrologer",
-            createdAt: serverTimestamp()
-          }, { merge: true }).catch(err => console.warn("Firestore setDoc warning:", err));
+          try {
+            if (db && typeof db.app === "object") {
+              setDoc(doc(db, "astrologers", newAstrologer.id), {
+                fullName: astroFullName,
+                email: email.trim() || null,
+                phone: phoneDigits,
+                title: newAstrologer.title,
+                role: "astrologer",
+                createdAt: serverTimestamp()
+              }, { merge: true }).catch(err => console.warn("Firestore setDoc warning:", err));
+            }
+          } catch (e) {}
+
 
           setLoading(false);
           login({
@@ -483,12 +488,17 @@ export function AuthPage() {
           }
 
           // Save Firestore
-          setDoc(doc(db, "users", finalUserId), {
-            fullName: name.trim(),
-            email: email.trim() || null,
-            phone: phoneDigits,
-            createdAt: serverTimestamp()
-          }, { merge: true }).catch(err => console.warn("Firestore setDoc warning:", err));
+          try {
+            if (db && typeof db.app === "object") {
+              setDoc(doc(db, "users", finalUserId), {
+                fullName: name.trim(),
+                email: email.trim() || null,
+                phone: phoneDigits,
+                createdAt: serverTimestamp()
+              }, { merge: true }).catch(err => console.warn("Firestore setDoc warning:", err));
+            }
+          } catch (e) {}
+
 
           setLoading(false);
           login({
@@ -567,14 +577,19 @@ export function AuthPage() {
         }
 
         // Save to Firestore 'astrologers' collection
-        setDoc(doc(db, "astrologers", finalUserId), {
-          fullName: astroFullName,
-          email: email.trim() || null,
-          phone: phoneDigits,
-          title: newAstrologer.title,
-          role: "astrologer",
-          createdAt: serverTimestamp()
-        }, { merge: true }).catch(err => console.warn("Firestore setDoc warning:", err));
+        try {
+          if (db && typeof db.app === "object") {
+            setDoc(doc(db, "astrologers", finalUserId), {
+              fullName: astroFullName,
+              email: email.trim() || null,
+              phone: phoneDigits,
+              title: newAstrologer.title,
+              role: "astrologer",
+              createdAt: serverTimestamp()
+            }, { merge: true }).catch(err => console.warn("Firestore setDoc warning:", err));
+          }
+        } catch (e) {}
+
 
         setLoading(false);
         login({
@@ -628,12 +643,17 @@ export function AuthPage() {
         console.warn("Direct Supabase user upsert warning:", supaErr);
       }
 
-      setDoc(doc(db, "users", finalUserId), {
-        fullName: name.trim(),
-        email: email.trim() || null,
-        phone: phoneDigits,
-        createdAt: serverTimestamp()
-      }, { merge: true }).catch(err => console.warn("Firestore setDoc warning:", err));
+      try {
+        if (db && typeof db.app === "object") {
+          setDoc(doc(db, "users", finalUserId), {
+            fullName: name.trim(),
+            email: email.trim() || null,
+            phone: phoneDigits,
+            createdAt: serverTimestamp()
+          }, { merge: true }).catch(err => console.warn("Firestore setDoc warning:", err));
+        }
+      } catch (e) {}
+
 
       setLoading(false);
       login({
