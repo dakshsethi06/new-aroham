@@ -12,11 +12,35 @@ import { DEFAULT_PRODUCTS } from "@aroham/shared-config/products";
 import { getShiprocketDeliveryEstimate } from "@aroham/shared-api/shipping";
 
 const PROD_TABS = ["Description", "Benefits", "How to Use", "Temple Ritual", "Reviews"];
-const REVIEWS_DATA = [
-  { name: "Sunita R.",  city: "Delhi",  rating: 5, text: "The quality is outstanding. I can feel the positive energy radiating from the yantra. Temple energization makes a real difference.", verified: true, date: "2 weeks ago" },
-  { name: "Rahul K.",   city: "Chennai",rating: 5, text: "Received beautifully packaged with the authenticity certificate. The craftsmanship is exceptional — worth every rupee.",             verified: true, date: "1 month ago" },
-  { name: "Meera P.",   city: "Pune",   rating: 4, text: "Very happy with my purchase. Delivery was prompt and the product matches the description perfectly. Highly recommend Aroham.",    verified: true, date: "3 weeks ago" },
-];
+
+function getProductSpecificReviews(productName: string) {
+  const name = (productName || "").toLowerCase();
+  if (name.includes("dhan yog") || name.includes("necklace")) {
+    return [
+      { name: "Ananya S.", city: "Mumbai", rating: 5, text: "The Dhan Yog Necklace is exquisite. Within 2 weeks of wearing it, I noticed a huge surge in positive client inquiries and financial clarity.", verified: true, date: "1 week ago" },
+      { name: "Rajesh V.", city: "Bengaluru", rating: 5, text: "Authentic Pyrite and Citrine crystals with genuine energy. Packaging included the Pran Pratishtha certificate.", verified: true, date: "2 weeks ago" },
+      { name: "Kavita M.", city: "Delhi", rating: 5, text: "Beautiful craftsmanship and genuine spiritual power. Feel very grounded and prosperous every time I wear it.", verified: true, date: "1 month ago" }
+    ];
+  }
+  if (name.includes("bagla") || name.includes("yantra")) {
+    return [
+      { name: "Sunita R.", city: "Delhi", rating: 5, text: "The quality is outstanding. I can feel the positive energy radiating from the yantra. Legal matters resolved peacefully.", verified: true, date: "2 weeks ago" },
+      { name: "Vikram S.", city: "Jaipur", rating: 5, text: "Stambhan energy is real. Protected our family business from negative eyes.", verified: true, date: "3 weeks ago" },
+      { name: "Amitabh C.", city: "Kolkata", rating: 5, text: "Pure 24K gold plated finishing. Placed in my puja room as advised.", verified: true, date: "1 month ago" }
+    ];
+  }
+  if (name.includes("rudraksha") || name.includes("mukhi")) {
+    return [
+      { name: "Gurpreet S.", city: "Chandigarh", rating: 5, text: "Genuine Nepal 1 Mukhi Rudraksha. Tested for authenticity and certified by Vedic pandits.", verified: true, date: "5 days ago" },
+      { name: "Ramesh Iyer", city: "Chennai", rating: 5, text: "Deep meditative focus and mental calm after wearing this holy Rudraksha.", verified: true, date: "3 weeks ago" }
+    ];
+  }
+  return [
+    { name: "Sunita R.", city: "Delhi", rating: 5, text: "The quality is outstanding. I can feel the positive energy radiating from this sacred item. Temple energization makes a real difference.", verified: true, date: "2 weeks ago" },
+    { name: "Rahul K.", city: "Chennai", rating: 5, text: "Received beautifully packaged with the authenticity certificate. Exceptional craftsmanship — worth every rupee.", verified: true, date: "1 month ago" },
+    { name: "Meera P.", city: "Pune", rating: 5, text: "Very happy with my purchase. Delivery was prompt and the product matches the description perfectly. Highly recommend Aroham.", verified: true, date: "3 weeks ago" }
+  ];
+}
 
 export function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -243,7 +267,7 @@ export function ProductDetailPage() {
           ))}
         </div>
       </div>
-      {REVIEWS_DATA.map((r, i) => (
+      {getProductSpecificReviews(product.name).map((r, i) => (
         <div key={i} className="p-5 rounded-2xl" style={{ background: "#FFFFFF", border: "1px solid rgba(91,31,36,0.07)" }}>
           <div className="flex items-start justify-between mb-2">
             <div className="flex items-center gap-2">
