@@ -341,13 +341,24 @@ export function AstrologerOnboardingPage() {
                   </select>
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="block text-[10px] font-bold text-amber-900/70 mb-1.5 uppercase tracking-wider">Mobile Number</label>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="block text-[10px] font-bold text-amber-900/70 uppercase tracking-wider">Mobile Number</label>
+                    {otpSent && !mobileVerified && (
+                      <button
+                        type="button"
+                        onClick={() => { setOtpSent(false); setOtp(""); setError(null); }}
+                        className="text-[11px] font-bold text-[#5B1F24] hover:underline flex items-center gap-1 cursor-pointer"
+                      >
+                        ✏️ Change Number
+                      </button>
+                    )}
+                  </div>
                   <input
                     type="tel"
                     placeholder="Enter your 10-digit mobile number"
                     value={mobile}
                     onChange={(e) => setMobile(e.target.value)}
-                    disabled={otpSent}
+                    disabled={otpSent && mobileVerified}
                     className={INPUT_CLASS + " w-full"}
                   />
                 </div>
