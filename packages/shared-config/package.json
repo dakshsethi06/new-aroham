@@ -6,6 +6,6 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "dependencies": {
-    "@aroham/shared-types": "workspace:*"
+    "@aroham/shared-types": "file:../shared-types"
   }
 }

@@ -6,9 +6,9 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "dependencies": {
-    "@aroham/shared-config": "workspace:*",
-    "@aroham/shared-services": "workspace:*",
-    "@aroham/shared-types": "workspace:*",
-    "@aroham/shared-utils": "workspace:*"
+    "@aroham/shared-config": "file:../shared-config",
+    "@aroham/shared-services": "file:../shared-services",
+    "@aroham/shared-types": "file:../shared-types",
+    "@aroham/shared-utils": "file:../shared-utils"
   }
 }
