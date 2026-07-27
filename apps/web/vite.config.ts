@@ -37,6 +37,7 @@ export default defineConfig({
       '@aroham/shared-auth': path.resolve(__dirname, '../../packages/shared-auth/src'),
       '@aroham/shared-state': path.resolve(__dirname, '../../packages/shared-state/src'),
       '@aroham/shared-hooks': path.resolve(__dirname, '../../packages/shared-hooks/src'),
+      '@aroham/shared-hooks/': path.resolve(__dirname, '../../packages/shared-hooks/src/'),
       '@aroham/shared-validation': path.resolve(__dirname, '../../packages/shared-validation/src'),
       '@visual': path.resolve(__dirname, './visual'),
       '@': path.resolve(__dirname, './visual'),

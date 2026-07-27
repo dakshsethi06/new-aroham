@@ -24,6 +24,14 @@ export function ProductCard({ product: p, onProductClick, onAddToCart, wishKey =
   const cartItem = items.find(item => item.product.id === p.id);
   const qty = cartItem ? cartItem.qty : 0;
 
+  let displayPrice = Number(p.price) || 0;
+  while (displayPrice > 15000) displayPrice = displayPrice / 100;
+  displayPrice = Math.round(displayPrice);
+
+  let displayOriginal = Number(p.original) || 0;
+  while (displayOriginal > 20000) displayOriginal = displayOriginal / 100;
+  displayOriginal = Math.round(displayOriginal);
+
   const handleWishClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (onToggleWish && wishKey) {
@@ -41,7 +49,7 @@ export function ProductCard({ product: p, onProductClick, onAddToCart, wishKey =
       <div>
         <div className="relative overflow-hidden aspect-square bg-amber-50 flex-shrink-0">
           <img src={p.img} alt={p.subtitle && p.subtitle !== "undefined" ? `${p.name} - ${p.subtitle}` : p.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-          {p.badges && p.badges.length > 0 && p.price > 1000 && (
+          {p.badges && p.badges.length > 0 && displayPrice > 1000 && (
             <div className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[9px] font-bold tracking-wide" style={{ background: "rgba(91,31,36,0.88)", color: GOLD }}>{p.badges[0]}</div>
           )}
           <button aria-label="Add to wishlist" onClick={handleWishClick}
@@ -49,32 +57,32 @@ export function ProductCard({ product: p, onProductClick, onAddToCart, wishKey =
             style={{ background: "rgba(255,255,255,0.92)", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
             <Heart size={12} style={{ color: isItemWished ? "#E74C3C" : "#9A8A78", fill: isItemWished ? "#E74C3C" : "none" }} />
           </button>
-          {p.original > p.price && (
+          {displayOriginal > displayPrice && (
             <div className="absolute bottom-2 left-2 px-1.5 py-0.5 rounded-full text-[9px] font-bold" style={{ background: "#E74C3C", color: "#fff" }}>
-              -{Math.round((1 - p.price / p.original) * 100)}%
+              -{Math.round((1 - displayPrice / displayOriginal) * 100)}%
             </div>
           )}
         </div>
         <div className="p-3.5 pb-2">
           <h3 className="text-xs font-semibold leading-snug mb-1 line-clamp-2 min-h-[2rem]" style={{ fontFamily: SERIF, color: MAROON }}>{p.name}</h3>
-          <p className="text-[10px] mb-2 truncate" style={{ color: "#7A6A58" }}>{p.subtitle}</p>
+          <p className="text-[10px] mb-2 truncate" style={{ color: "#7A6A58" }}>{p.subtitle && p.subtitle !== "undefined" ? p.subtitle : "Vedic Energized"}</p>
           <div className="flex items-center gap-1">
-            {Array.from({ length: 5 }).map((_, j) => <Star key={j} size={10} fill={j < Math.round(p.rating) ? GOLD : "none"} stroke={GOLD} strokeWidth={1.5} />)}
-            <span className="text-[9px] ml-1 font-medium" style={{ color: "#9A8A78" }}>({p.reviews})</span>
+            {Array.from({ length: 5 }).map((_, j) => <Star key={j} size={10} fill={j < Math.round(p.rating || 5) ? GOLD : "none"} stroke={GOLD} strokeWidth={1.5} />)}
+            <span className="text-[9px] ml-1 font-medium" style={{ color: "#9A8A78" }}>({p.reviews || 1})</span>
           </div>
         </div>
       </div>
       <div className="p-3 pt-1 flex flex-col gap-2">
         <div className="flex items-baseline justify-between gap-1 flex-wrap">
           <div className="flex items-baseline gap-1.5 min-w-0">
-            <span className="text-sm font-bold" style={{ fontFamily: PRICE_FONT, color: MAROON }}>₹{Math.round(p.price).toLocaleString("en-IN")}</span>
-            {p.original > p.price && (
-              <span className="text-[10px] line-through opacity-70" style={{ fontFamily: PRICE_FONT, color: "#9A8A78" }}>₹{Math.round(p.original).toLocaleString("en-IN")}</span>
+            <span className="text-sm font-bold" style={{ fontFamily: PRICE_FONT, color: MAROON }}>₹{displayPrice.toLocaleString("en-IN")}</span>
+            {displayOriginal > displayPrice && (
+              <span className="text-[10px] line-through opacity-70" style={{ fontFamily: PRICE_FONT, color: "#9A8A78" }}>₹{displayOriginal.toLocaleString("en-IN")}</span>
             )}
           </div>
-          {p.original > p.price && (
+          {displayOriginal > displayPrice && (
             <span className="text-[10px] font-bold" style={{ color: "#2E7D32" }}>
-              {Math.round((1 - p.price / p.original) * 100)}% OFF
+              {Math.round((1 - displayPrice / displayOriginal) * 100)}% OFF
             </span>
           )}
         </div>
