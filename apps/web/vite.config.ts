@@ -26,6 +26,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
+      '@supabase/supabase-js': path.resolve(__dirname, 'node_modules/@supabase/supabase-js'),
       '@aroham/shared-types': path.resolve(__dirname, '../../packages/shared-types/src'),
       '@aroham/shared-config': path.resolve(__dirname, '../../packages/shared-config/src'),
       '@aroham/shared-utils': path.resolve(__dirname, '../../packages/shared-utils/src'),
