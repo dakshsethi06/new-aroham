@@ -59,6 +59,10 @@ app.use("/api/addresses", require("./routes/addresses"));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/shiprocket", require("./routes/shiprocket"));
 app.use("/api/onboarding", require("./routes/onboarding"));
+app.use("/api/admin/auth", require("./routes/admin/authRoutes"));
+app.use("/api/admin/users", require("./routes/admin/userRoutes"));
+app.use("/api/admin/products", require("./routes/admin/productRoutes"));
+app.use("/api/admin/astrologers", require("./routes/admin/astrologerRoutes"));
 app.use("/api/admin/onboarding", require("./routes/adminOnboarding"));
 
 
