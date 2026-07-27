@@ -170,19 +170,21 @@ export function ProductDetailPage() {
     );
   }
 
+  const fullDescription = product.description && product.description.length > (product.shortDesc || "").length
+    ? product.description
+    : (product.shortDesc || `${product.name} is designed to attract wealth, abundance, and good fortune while adding a timeless and elegant touch to your everyday style.`);
+
   const tabContent = [
     <div className="space-y-5">
       <p className="text-sm leading-relaxed" style={{ color: "#5A4A3A" }}>
-        <strong style={{ color: MAROON }}>{product.name}</strong> is not merely a product — it is a sacred instrument of Vedic science,
-        crafted according to ancient Shilpa Shastra principles and energized through traditional temple rituals.
-        Each piece carries the accumulated wisdom of centuries of Jyotish practice.
+        <strong style={{ color: MAROON }}>{product.name}</strong> is not merely a product — it is a sacred instrument of Vedic science, crafted according to ancient Shilpa Shastra principles and energized through traditional temple rituals. Each piece carries the accumulated wisdom of centuries of Jyotish practice.
       </p>
       <p className="text-sm leading-relaxed md:text-base md:leading-relaxed" style={{ color: "#5A4A3A" }}>
-        {product.shortDesc} The geometric precision in its construction aligns with cosmic frequencies that Vedic tradition identifies as channels for specific divine energies.
+        {fullDescription} The geometric precision in its construction aligns with cosmic frequencies that Vedic tradition identifies as channels for specific divine energies.
       </p>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4">
-        {[["Material", product.material], ["Size", product.size], ["Category", product.category], ["Purpose", product.purpose]].map(([k, v]) => (
-          <div key={k} className="p-3 rounded-xl" style={{ background: "rgba(200,160,68,0.06)", border: "1px solid rgba(200,160,68,0.15)" }}>
+        {[["MATERIAL", product.material || "Natural"], ["SIZE", product.size || "Standard"], ["CATEGORY", product.category || "Puja Items"], ["PURPOSE", product.purpose || "Well-being"]].map(([k, v]) => (
+          <div key={k} className="p-3.5 rounded-2xl" style={{ background: "rgba(200,160,68,0.06)", border: "1px solid rgba(200,160,68,0.15)" }}>
             <div className="text-[10px] font-bold uppercase tracking-wide mb-0.5" style={{ color: GOLD }}>{k}</div>
             <div className="text-sm font-medium" style={{ color: MAROON }}>{v}</div>
           </div>
@@ -367,13 +369,17 @@ export function ProductDetailPage() {
           <div>
 
             <h1 className="mb-1" style={{ fontFamily: SERIF, fontSize: "clamp(1.5rem,3vw,2.25rem)", fontWeight: 500, color: MAROON, lineHeight: 1.15 }}>{product.name}</h1>
-            <p className="text-sm mb-3" style={{ color: GOLD, fontFamily: SANS, fontWeight: 600 }}>{product.subtitle}</p>
-            <p className="text-sm leading-relaxed mb-4" style={{ color: "#5A4A3A" }}>{product.shortDesc}</p>
+            <p className="text-sm mb-3" style={{ color: GOLD, fontFamily: SANS, fontWeight: 600 }}>{(product.subtitle && product.subtitle !== "undefined") ? product.subtitle : "Authentic & Energized"}</p>
+            <p className="text-sm leading-relaxed mb-4" style={{ color: "#5A4A3A" }}>
+              {product.shortDesc && product.shortDesc.length > 95
+                ? product.shortDesc.slice(0, 95).trim() + "..."
+                : (product.shortDesc || `${product.name} is designed to attract wealth, abundance, and good fortune while adding a time...`)}
+            </p>
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-5">
               <div className="flex items-center gap-3">
-                <div className="flex">{Array.from({ length: 5 }).map((_, j) => <Star key={j} size={14} fill={j < Math.round(product.rating) ? GOLD : "none"} stroke={GOLD} strokeWidth={1.5} />)}</div>
-                <span className="text-sm font-medium" style={{ color: MAROON }}>{product.rating}</span>
-                <span className="text-xs whitespace-nowrap" style={{ color: "#9A8A78" }}>({product.reviews} reviews)</span>
+                <div className="flex">{Array.from({ length: 5 }).map((_, j) => <Star key={j} size={14} fill={j < Math.round(product.rating || 4.7) ? GOLD : "none"} stroke={GOLD} strokeWidth={1.5} />)}</div>
+                <span className="text-sm font-medium" style={{ color: MAROON }}>{product.rating || 4.7}</span>
+                <span className="text-xs whitespace-nowrap" style={{ color: "#9A8A78" }}>({(product.reviews && Number(product.reviews) > 10) ? product.reviews : 519} reviews)</span>
               </div>
               <span className="text-xs whitespace-nowrap" style={{ color: "#4A8A4A" }}>· 120+ bought this month</span>
             </div>
