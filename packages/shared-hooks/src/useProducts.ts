@@ -16,23 +16,36 @@ function formatImageUrl(url: any) {
 
 function mapSupaProducts(data: any[]): ArohamProduct[] {
   return data.map((p: any) => {
-    const rawPrice = Number(p.price) || 0;
-    const priceVal = rawPrice > 10000 ? rawPrice / 100 : rawPrice;
-    const rawOrig = p.original_price ? Number(p.original_price) : 0;
-    const origVal = rawOrig > 0 ? (rawOrig > 10000 ? rawOrig / 100 : rawOrig) : Math.round(priceVal * 1.25);
+    let rawPrice = Number(p.price) || 0;
+    while (rawPrice > 15000) {
+      rawPrice = rawPrice / 100;
+    }
+    const priceVal = Math.round(rawPrice);
+    
+    let rawOrig = p.original_price ? Number(p.original_price) : 0;
+    while (rawOrig > 20000) {
+      rawOrig = rawOrig / 100;
+    }
+    const origVal = rawOrig > 0 ? Math.round(rawOrig) : Math.round(priceVal * 1.25);
+
+    const sub = (p.subtitle && p.subtitle !== "undefined") ? p.subtitle : (p.short_desc || "Vedic Energized");
+    const rawImg = p.img || p.image;
+    const finalImg = (rawImg && rawImg !== "undefined") 
+      ? formatImageUrl(rawImg) 
+      : "https://images.unsplash.com/photo-1611312449408-fcece27cdbb7?auto=format&fit=crop&w=400&q=80";
 
     return {
       id: p.id,
       slug: p.slug || `product-${p.id}`,
       name: p.name || "Sacred Item",
-      subtitle: p.subtitle || p.short_desc || "Temple Energized",
+      subtitle: sub,
       category: p.category || "Other",
       purpose: p.purpose || "Sacred Harmony",
       price: priceVal,
       original: origVal,
       rating: Number(p.rating) || 5.0,
       reviews: Number(p.reviews) || 1,
-      img: formatImageUrl(p.img || p.image || "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=400&q=80"),
+      img: finalImg,
       badges: p.badges || ["Temple Energized"],
       shortDesc: p.short_desc || p.description || "",
       benefits: p.benefits || ["Temple Energized", "Authentic Vedic Product"],
